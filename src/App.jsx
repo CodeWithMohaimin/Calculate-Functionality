@@ -1,11 +1,12 @@
-// TODO: Handle user input fields
-// TODO: Handle Buttons Or Operations
+// Done: Handle user input fields
+// doNE: Handle Buttons Or Operations
 // TODO: Handle a list of histories
 // TODO Render History list
 // TODO Restore the history
 
 import React, { useState } from "react";
 
+//input initial value
 const InitialInputState = {
   a: 0,
   b: 0,
@@ -13,7 +14,9 @@ const InitialInputState = {
 
 const App = () => {
   const [inputState, setInputState] = useState({ ...InitialInputState });
+  const [result, setResult] = useState(0);
 
+  //handle input section
   const handleInputField = (event) => {
     setInputState({
       ...inputState,
@@ -21,10 +24,27 @@ const App = () => {
     });
   };
 
+  // Clear Function
+  const clear = () => {
+    setInputState({ ...InitialInputState });
+  };
+
+  // Arithmetic Calculations
+  const handleCalculations = (operation) => {
+    const f = new Function(
+      "operation",
+
+      `
+    return ${inputState.a} ${operation} ${inputState.b}
+    `
+    );
+    setResult(f(operation));
+  };
+
   return (
     <div className="container">
       <div>
-        <h1>Result : 0</h1>
+        <h1>Result : {result}</h1>
       </div>
       <div>
         <p>Inputs</p>
@@ -43,12 +63,12 @@ const App = () => {
       </div>
       <div>
         <p>Operations</p>
-        <button>+</button>
-        <button>-</button>
-        <button>*</button>
-        <button>/</button>
-        <button>%</button>
-        <button>Clear</button>
+        <button onClick={() => handleCalculations("+")}>+</button>
+        <button onClick={() => handleCalculations("-")}>-</button>
+        <button onClick={() => handleCalculations("*")}>*</button>
+        <button onClick={() => handleCalculations("/")}>/</button>
+        <button onClick={() => handleCalculations("%")}>%</button>
+        <button onClick={clear}>Clear</button>
       </div>
       <div>
         <p>History</p>
